@@ -88,3 +88,17 @@ class TestMain(TestCar):
     def test_main_function_exists(self):
         from car import main
         self.assertTrue(callable(main))
+
+class TestRefuel(TestCar):
+    def test_refuel_positive_amount(self):
+        self.car.refuel(10)
+        self.assertEqual(self.car.fuel, 10)
+
+    def test_refuel_negative_amount(self):
+        self.car.refuel(-5)
+        self.assertEqual(self.car.fuel, 0)  # Assuming initial fuel is 0
+
+    def test_refuel_zero_amount(self):
+        self.car.refuel(0)
+        self.assertEqual(self.car.fuel, 0)  # Assuming initial fuel is 0
+
