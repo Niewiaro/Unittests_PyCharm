@@ -119,10 +119,19 @@ class TestTruckCargo(TestTruck):
         self.truck.load_cargo(50)
         self.assertEqual(self.truck.cargo, 50)
 
+    def test_load_negative_cargo(self):
+        self.truck.load_cargo(-20)
+        self.assertEqual(self.truck.cargo, 0)
+
     def test_unload_cargo(self):
         self.truck.load_cargo(50)
         self.truck.unload_cargo(20)
         self.assertEqual(self.truck.cargo, 30)
+
+    def test_unload_negative_cargo(self):
+        self.truck.load_cargo(50)
+        self.truck.unload_cargo(-20)
+        self.assertEqual(self.truck.cargo, 50)
 
 
 class TestTruckOverload(TestTruck):
