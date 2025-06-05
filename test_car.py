@@ -53,6 +53,7 @@ class TestBrake(TestCar):
             self.car.brake()
         self.assertEqual(self.car.speed, 0)
 
+
 class TestStep(TestCar):
     def test_step_increases_odometer(self):
         self.car.speed = 10
@@ -66,6 +67,7 @@ class TestStep(TestCar):
             self.car.step()
         self.assertEqual(self.car.odometer, 60)
         self.assertEqual(self.car.time, 3)
+
 
 class TestAverageSpeed(TestCar):
     def test_average_speed_with_no_time(self):
@@ -84,10 +86,12 @@ class TestAverageSpeed(TestCar):
         self.car.step()
         self.assertEqual(self.car.average_speed(), 15)
 
+
 class TestMain(TestCar):
     def test_main_function_exists(self):
         from car import main
         self.assertTrue(callable(main))
+
 
 class TestRefuel(TestCar):
     def test_refuel_positive_amount(self):
@@ -102,3 +106,64 @@ class TestRefuel(TestCar):
         self.car.refuel(0)
         self.assertEqual(self.car.fuel, 0)  # Assuming initial fuel is 0
 
+
+class TestTruck(TestCase):
+    def setUp(self):
+        from car import Truck
+
+        self.truck = Truck()
+
+
+class TestTruckCargo(TestTruck):
+    def test_load_cargo(self):
+        self.truck.load_cargo(50)
+        self.assertEqual(self.truck.cargo, 50)
+
+    def test_unload_cargo(self):
+        self.truck.load_cargo(50)
+        self.truck.unload_cargo(20)
+        self.assertEqual(self.truck.cargo, 30)
+
+
+class TestTruckOverload(TestTruck):
+    def test_not_overloaded(self):
+        self.truck.load_cargo(100)
+        self.assertFalse(self.truck.is_overloaded())
+
+    def test_overloaded(self):
+        self.truck.load_cargo(120)
+        self.assertFalse(self.truck.is_overloaded())  # cargo capped at max_cargo
+
+    def test_max_cargo(self):
+        self.truck.load_cargo(100)
+        self.assertTrue(self.truck.cargo <= self.truck.max_cargo)
+
+
+class TestPoliceCar(TestCase):
+    def setUp(self):
+        from car import PoliceCar
+
+        self.police_car = PoliceCar()
+
+
+class TestPoliceCarSiren(TestPoliceCar):
+    def test_toggle_siren_on(self):
+        self.police_car.toggle_siren()
+        self.assertTrue(self.police_car.is_siren_active())
+
+    def test_toggle_siren_off(self):
+        self.police_car.toggle_siren()
+        self.police_car.toggle_siren()
+        self.assertFalse(self.police_car.is_siren_active())
+
+
+class TestPoliceCarArrests(TestPoliceCar):
+    def test_make_arrest(self):
+        self.police_car.make_arrest()
+        self.police_car.make_arrest()
+        self.assertEqual(self.police_car.arrests, 2)
+
+
+class TestPoliceCarAttributes(TestPoliceCar):
+    def test_siren_attribute(self):
+        self.assertIn('siren_on', self.police_car.__dict__)

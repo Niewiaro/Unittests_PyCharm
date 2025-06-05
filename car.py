@@ -36,6 +36,42 @@ class Car:
             return 0.0
 
 
+class Truck(Car):
+    def __init__(self, speed: int = 0, fuel: int = 0, cargo: int = 0) -> None:
+        super().__init__(speed, fuel)
+        self.cargo = cargo
+        self.max_cargo = 100
+
+    def load_cargo(self, amount: int) -> None:
+        if amount < 0:
+            return
+        self.cargo = min(self.cargo + amount, self.max_cargo)
+
+    def unload_cargo(self, amount: int) -> None:
+        if amount < 0:
+            return
+        self.cargo = max(self.cargo - amount, 0)
+
+    def is_overloaded(self) -> bool:
+        return self.cargo > self.max_cargo
+
+
+class PoliceCar(Car):
+    def __init__(self, speed: int = 0, fuel: int = 0) -> None:
+        super().__init__(speed, fuel)
+        self.siren_on = False
+        self.arrests = 0
+
+    def toggle_siren(self) -> None:
+        self.siren_on = not self.siren_on
+
+    def make_arrest(self) -> None:
+        self.arrests += 1
+
+    def is_siren_active(self) -> bool:
+        return self.siren_on
+
+
 def main() -> None:
     my_car = Car()
     print("I'm a car!")
