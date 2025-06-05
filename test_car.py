@@ -52,3 +52,39 @@ class TestBrake(TestCar):
         for _ in range(3):
             self.car.brake()
         self.assertEqual(self.car.speed, 0)
+
+class TestStep(TestCar):
+    def test_step_increases_odometer(self):
+        self.car.speed = 10
+        self.car.step()
+        self.assertEqual(self.car.odometer, 10)
+        self.assertEqual(self.car.time, 1)
+
+    def test_multiple_steps(self):
+        self.car.speed = 20
+        for _ in range(3):
+            self.car.step()
+        self.assertEqual(self.car.odometer, 60)
+        self.assertEqual(self.car.time, 3)
+
+class TestAverageSpeed(TestCar):
+    def test_average_speed_with_no_time(self):
+        self.assertEqual(self.car.average_speed(), 0)
+
+    def test_average_speed_after_steps(self):
+        self.car.speed = 10
+        for _ in range(3):
+            self.car.step()
+        self.assertEqual(self.car.average_speed(), 10)
+
+    def test_average_speed_after_multiple_speeds(self):
+        self.car.speed = 10
+        self.car.step()
+        self.car.speed = 20
+        self.car.step()
+        self.assertEqual(self.car.average_speed(), 15)
+
+class TestMain(TestCar):
+    def test_main_function_exists(self):
+        from car import main
+        self.assertTrue(callable(main))

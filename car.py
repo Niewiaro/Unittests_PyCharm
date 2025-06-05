@@ -1,30 +1,33 @@
 class Car:
-    def __init__(self, speed=0):
+    def __init__(self, speed=0) -> None:
         self.speed = speed
         self.odometer = 0
         self.time = 0
 
-    def say_state(self):
+    def say_state(self) -> None:
         print("I'm going {} kph!".format(self.speed))
 
-    def accelerate(self):
+    def accelerate(self) -> None:
         self.speed += 5
 
-    def brake(self):
+    def brake(self) -> None:
         if self.speed < 5:
             self.speed = 0
         else:
             self.speed -= 5
 
-    def step(self):
+    def step(self) -> None:
         self.odometer += self.speed
         self.time += 1
 
-    def average_speed(self):
-        return self.odometer / self.time
+    def average_speed(self) -> float:
+        try:
+            return self.odometer / self.time
+        except ZeroDivisionError:
+            return 0.0
 
 
-if __name__ == '__main__':
+def main() -> None:
     my_car = Car()
     print("I'm a car!")
     while True:
@@ -46,3 +49,7 @@ if __name__ == '__main__':
                   "kph".format(my_car.average_speed()))
         my_car.step()
         my_car.say_state()
+
+
+if __name__ == "__main__":
+    main()
